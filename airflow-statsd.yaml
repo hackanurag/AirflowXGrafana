@@ -1,0 +1,92 @@
+version: '1'
+x-airflow-common:
+  &airflow-common
+  image: apache/airflow:2.9.0
+  environment:
+    - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    - AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK=True
+  volumes:
+    - /c/Users/anura/AirflowXGrafana/dags:/opt/airflow/dags
+    - /c/Users/anura/AirflowXGrafana/logs:/opt/airflow/logs
+    - /c/Users/anura/AirflowXGrafana/config:/opt/airflow/config
+    - /c/Users/anura/AirflowXGrafana/plugins:/opt/airflow/plugins
+  depends_on:
+    postgres:
+      condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres-airflow
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+      - POSTGRES_PORT=5432
+    ports:
+      - "5432:5432"
+    volumes:
+      - /c/Users/anura/AirflowXGrafana/postgres_db_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
+
+  airflow-webserver:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    command: 
+      - -c
+      - airflow webserver
+    ports:
+      - "8080:8080"
+    container_name: airflow_webserver
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-scheduler:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    command: 
+      - -c
+      - airflow scheduler
+    container_name: airflow_scheduler
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-init:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - ( airflow users list && List of existong users... Airflow DB initialization completed............ ) || (airflow db init &&
+        airflow users create
+          --role Admin 
+          --username webadmin
+          --password airflow 
+          --email anurag.datta.d@gmail.com
+          --firstname Airflow
+          --lastname webadmin  && echo DB initialized and user created &&  airflow users list)
+    restart: on-failure
+
+volumes:
+  postgres-db-volume:
