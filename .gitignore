@@ -12,6 +12,7 @@ build/
 develop-eggs/
 dist/
 downloads/
+postgres_db_volume/
 eggs/
 .eggs/
 lib/
