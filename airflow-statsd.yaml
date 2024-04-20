@@ -7,10 +7,10 @@ x-airflow-common:
     - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
     - AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK=True
   volumes:
-    - /c/Users/anura/AirflowXGrafana/dags:/opt/airflow/dags
-    - /c/Users/anura/AirflowXGrafana/logs:/opt/airflow/logs
-    - /c/Users/anura/AirflowXGrafana/config:/opt/airflow/config
-    - /c/Users/anura/AirflowXGrafana/plugins:/opt/airflow/plugins
+    - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
+    - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
+    - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
+    - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
   depends_on:
     postgres:
       condition: service_healthy
@@ -27,7 +27,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - /c/Users/anura/AirflowXGrafana/postgres_db_volume:/var/lib/postgresql/data
+      - ${AIRFLOW_PROJ_DIR:-.}/postgres_db_volume:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 10s
