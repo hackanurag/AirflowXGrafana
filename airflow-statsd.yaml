@@ -87,6 +87,16 @@ services:
           --firstname Airflow
           --lastname webadmin  && echo DB initialized and user created &&  airflow users list)
     restart: on-failure
-
+    
+  statsd-exporter:
+    image: prom/statsd-exporter #receives StatsD-style metrics and exports them as Prometheus metrics.
+    volumes:
+    - ${AIRFLOW_PROJ_DIR:-.}/config/statsd.yaml:/opt/airflow/statsd.yaml
+    container_name: airflow-statsd-exporter
+    command: "--statsd.mapping-config=/opt/airflow/statsd.yaml --statsd.listen-udp=:8125 --web.listen-address=:9102"
+    ports:
+        - 9102:9102
+        - 8125:8125/udp
+        
 volumes:
   postgres-db-volume:
