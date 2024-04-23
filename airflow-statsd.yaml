@@ -27,7 +27,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ${AIRFLOW_PROJ_DIR:-.}/postgres_db_volume:/var/lib/postgresql/data
+      - ${AIRFLOW_PROJ_DIR:-.}/postgres_db_volume_airflow:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 10s
@@ -97,6 +97,25 @@ services:
     ports:
         - 9102:9102
         - 8125:8125/udp
+
+  postgres-load:
+      image: postgres:13
+      container_name: postgres-load
+      environment:
+        - POSTGRES_USER=load
+        - POSTGRES_PASSWORD=load
+        - POSTGRES_DB=load
+        - POSTGRES_PORT=5432
+      ports:
+        - "5433:5432"
+      volumes:
+        - ${AIRFLOW_PROJ_DIR:-.}/postgres_db_volume_load:/var/lib/postgresql/data
+      healthcheck:
+        test: ["CMD", "pg_isready", "-U", "load"]
+        interval: 10s
+        retries: 5
+        start_period: 5s
+      restart: always
         
 volumes:
   postgres-db-volume:
