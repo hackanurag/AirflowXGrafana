@@ -12,7 +12,8 @@ build/
 develop-eggs/
 dist/
 downloads/
-postgres_db_volume/
+postgres_db_volume_airflow/
+postgres_db_volume_load/
 eggs/
 .eggs/
 lib/
