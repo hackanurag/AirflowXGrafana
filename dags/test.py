@@ -10,8 +10,8 @@ DAG_NAME = "example_subdag_operator"
 with DAG(
     dag_id=DAG_NAME,
     default_args={"retries": 2},
-    start_date=datetime.datetime(2022, 1, 1),
-    schedule="@once",
+    start_date=datetime.datetime(2024, 4, 24),
+    schedule="1 * * * *",
     tags=["example"],
 ) as dag:
     start = EmptyOperator(
