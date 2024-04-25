@@ -128,6 +128,15 @@ services:
         - 9090:9090
     volumes:
         - ${AIRFLOW_PROJ_DIR:-.}/config/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: airflow-grafana
+    environment:
+        GF_SECURITY_ADMIN_USER: admin
+        GF_SECURITY_ADMIN_PASSWORD: grafana
+    ports:
+      - 3000:3000
         
 volumes:
   postgres-db-volume:
