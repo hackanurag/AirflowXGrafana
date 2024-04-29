@@ -6,3 +6,5 @@ docker compose -f "airflow-statsd.yaml" down
 
 Install dbeaver separately and fill in the necessary details for the airflow postgres connection to see postgres-airflow <br>
 Add  statsd.yaml as mapping config so that later on we can easily set up Grafana Dashboard
+
+DAGS branch added to add new DAGs only.
