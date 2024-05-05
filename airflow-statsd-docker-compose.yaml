@@ -1,4 +1,4 @@
-version: '1'
+version: '2'
 x-airflow-common:
   &airflow-common
   image: apache/airflow:2.9.0
