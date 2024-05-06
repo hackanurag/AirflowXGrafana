@@ -15,6 +15,7 @@ downloads/
 postgres_db_volume_airflow/
 postgres_db_volume_load/
 grafana/
+tmp/
 eggs/
 .eggs/
 lib/
