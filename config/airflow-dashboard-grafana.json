@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1714929526221,
+  "iteration": 1715018570028,
   "links": [],
   "panels": [
     {
@@ -970,10 +970,10 @@
       "pluginVersion": "6.7.2",
       "targets": [
         {
-          "expr": "af_agg_executor_open_slots",
+          "expr": "af_agg_executor_open_slots{airflow_id=\"airflow\"}",
           "interval": "",
           "legendFormat": "",
-          "refId": "B"
+          "refId": "A"
         }
       ],
       "timeFrom": null,
@@ -1857,5 +1857,5 @@
   "variables": {
     "list": []
   },
-  "version": 3
+  "version": 4
 }

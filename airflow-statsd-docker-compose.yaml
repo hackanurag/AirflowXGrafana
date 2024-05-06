@@ -128,7 +128,7 @@ services:
         - 9090:9090
     volumes:
         - ${AIRFLOW_PROJ_DIR:-.}/config/prometheus.yml:/etc/prometheus/prometheus.yml
-
+        - ${AIRFLOW_PROJ_DIR:-.}/tmp/prometheus:/prometheus
   grafana:
     image: grafana/grafana:6.7.2
     container_name: airflow-grafana
