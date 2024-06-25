@@ -11,3 +11,5 @@ DAGS branch added to add new DAGs only.
 
 
 Adding node exporter for system metrices
+
+Will be adding nginix for port forewarding so that airflow can be accessed via a single port
